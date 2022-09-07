@@ -29,5 +29,7 @@ jobs:
           python-version: '3.9'
       - name: Test
         uses: onichandame/python-test-action@master
+        working-directory: ./test
         with:
-          deps_list: 'requirement'
+          deps_list: 'requirement'.
+        run: python -m unittest
