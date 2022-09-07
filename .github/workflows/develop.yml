@@ -2,8 +2,7 @@ name: Develop
 
 on: 
   push:
-    branches:
-      -dev
+    branches: [dev]
 
 jobs:
   flake8:
