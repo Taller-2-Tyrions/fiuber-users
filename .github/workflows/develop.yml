@@ -1,0 +1,34 @@
+name: Develop
+
+on: 
+  push:
+    branches:
+      -dev
+
+jobs:
+  flake8:
+    name: Code quality
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+    - name: Check Lint
+      run: |
+        pip install flake8
+        flake8 .
+  test:
+    name: Self Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Test
+        uses: onichandame/python-test-action@master
+        with:
+          deps_list: 'requirement'
