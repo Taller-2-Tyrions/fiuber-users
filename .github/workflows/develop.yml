@@ -41,13 +41,12 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
     - name: Build, Push and Release a Docker container to Heroku.
-      uses: gonuit/heroku-docker-deploy@v1.3.3
+      id: heroku
+      uses: jctaveras/heroku-deploy@v1.0.0
       with:
-        email: ${{ secrets.HEROKU_API_EMAIL }}
-        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-        heroku_app_name: ${{ secrets.HEROKU_APP }}
-        dockerfile_directory: ./
-        dockerfile_name: Dockerfile
-        docker_options: "--no-cache"
-        process_type: web
+        email: ${{ secrets.HEROKU_API_EMAIL }} # your heroku email
+        api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
+        app_name: ${{ secrets.HEROKU_APP }} # you aplication name
+        dockerfile_path: '.' # set the path to the folder where the Dockerfile is located
+        process_type: 'web'
         
