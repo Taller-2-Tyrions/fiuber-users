@@ -27,7 +27,7 @@ jobs:
         pip install flake8
         flake8 .
 
-  Test:
+  test:
     runs-on: ubuntu-18.04
     name: Test python API
     defaults:
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-18.04
     if: ${{ github.event_name == 'push' }}
     name: Deploy heroku
-    needs: [ flake8, Test ]
+    needs: [ flake8, test ]
     defaults:
       run:
         working-directory: .
