@@ -6,6 +6,10 @@ on:
   pull_request: 
     branches: [dev, main]
 
+env:
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  APP_NAME: ${{ secrets.HEROKU_APP }}
+
 jobs:
   flake8:
     name: Code quality
@@ -22,7 +26,7 @@ jobs:
         pip install flake8
         flake8 .
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     name: Test python API
     defaults:
       run:
@@ -40,13 +44,14 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-    - name: Build, Push and Release a Docker container to Heroku.
-      id: heroku
-      uses: jctaveras/heroku-deploy@v1.0.0
-      with:
-        email: ${{ secrets.HEROKU_API_EMAIL }} # your heroku email
-        api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
-        app_name: ${{ secrets.HEROKU_APP }} # you aplication name
-        dockerfile_path: '.' # set the path to the folder where the Dockerfile is located
-        process_type: 'web'
+
+    # Build para docker
+    - name: Docker build
+      run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+
+    # Push the Docker image to Heroku Container Registry
+    - name: Publish
+      run: |
+        heroku container:push web -a $APP_NAME
+        heroku container:release web -a $APP_NAME
         
