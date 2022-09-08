@@ -2,9 +2,9 @@ name: Develop
 
 on: 
   push:
-    branches: [dev, main]
+    branches: [ dev, main ]
   pull_request: 
-    branches: [dev, main]
+    branches: [ dev, main ]
     types: [ opened, synchronize ]
 
 env:
@@ -48,8 +48,9 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
   deploy:
     runs-on: ubuntu-18.04
+    if: ${{ github.event_name == 'push' }}
     name: Deploy heroku
-    needs: [flake8, Test]
+    needs: [ flake8, Test ]
     defaults:
       run:
         working-directory: .
