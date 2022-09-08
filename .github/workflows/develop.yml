@@ -25,7 +25,8 @@ jobs:
       run: |
         pip install flake8
         flake8 .
-  build:
+
+  Test:
     runs-on: ubuntu-18.04
     name: Test python API
     defaults:
@@ -44,6 +45,15 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+  deploy:
+    runs-on: ubuntu-18.04
+    name: Deploy heroku
+    needs: [flake8, Test]
+    defaults:
+      run:
+        working-directory: .
+    steps:
+    - uses: actions/checkout@v1
     - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
       uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
       with:
@@ -80,4 +90,4 @@ jobs:
         # For more information look at https://devcenter.heroku.com/articles/process-model
         
         process_type: web
-      
+
