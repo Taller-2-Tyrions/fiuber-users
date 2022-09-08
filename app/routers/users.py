@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from schemas.users import UserCreate
-from database.database import get_db
-from crud import users
+from fastapi import APIRouter
+from ..schemas.usersSchema import UserBase
+from ..crud import users
+from ..database.mongo import db
 
 router = APIRouter(
     prefix="/users",
@@ -10,7 +9,6 @@ router = APIRouter(
 )
 
 
-@router.post('/')
-def create_user(request: UserCreate, db: Session = Depends(get_db)):
-    return users.create_user(db, request)
-
+@router.post('/find_user')
+def find_user(user: UserBase):
+    return users.find_user(db, user.name)
