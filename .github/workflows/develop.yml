@@ -2,9 +2,9 @@ name: Develop
 
 on: 
   push:
-    branches: [ dev, main ]
+    branches: [ develop, main ]
   pull_request: 
-    branches: [ dev, main ]
+    branches: [ develop, main ]
     types: [ opened, synchronize ]
 
 env:
