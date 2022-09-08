@@ -21,4 +21,4 @@ app.add_middleware(
 
 @app.get("/")
 async def main():
-    return {"Hola desde users"} 
+    return {"Hola desde users"}
