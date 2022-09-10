@@ -10,6 +10,9 @@ on:
 env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   APP_NAME: ${{ secrets.HEROKU_APP }}
+  MONGO_URI: ${{secrets.MONGO_URI}}
+  MONGO_PORT: ${{secrets.MONGO_PORT}}
+  MONGO_DB: ${{secrets.MONGO_DB}}
 
 jobs:
   flake8:

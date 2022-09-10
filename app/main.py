@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from .routers import users
 from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
@@ -18,7 +20,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(users.router)
+
 
 @app.get("/")
-async def main():
-    return {"Hola desde users"}
+async def root():
+    return {"Hellp World"}
