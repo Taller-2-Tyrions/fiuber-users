@@ -25,4 +25,4 @@ app.include_router(users.router)
 
 @app.get("/")
 async def root():
-    return {"Hello: "World"}
+    return {"Hello": "World"}
