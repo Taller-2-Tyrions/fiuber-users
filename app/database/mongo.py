@@ -4,5 +4,5 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = MongoClient(os.getenv('MONGO_URI'), int(os.getenv('MONGO_PORT')))
-db = client[os.getenv('MONGO_DB')]
+client = MongoClient("mongodb+srv://fiuber_admin:gpsvj06RJ1QZVV4t@fiuber.qn2hoxw.mongodb.net/?retryWrites=true&w=majority", 8000)
+db = client[clients]
