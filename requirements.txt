@@ -3,4 +3,4 @@ uvicorn
 pytest
 pytest-cov
 pymongo
-dotenv
+python-dotenv
