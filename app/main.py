@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import users
+from .routers import users, login, signup
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -21,6 +21,8 @@ app.add_middleware(
 )
 
 app.include_router(users.router)
+app.include_router(login.router)
+app.include_router(signup.router)
 
 
 @app.get("/")

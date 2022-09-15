@@ -5,3 +5,6 @@ pytest-cov
 pymongo
 python-dotenv
 dnspython
+http3
+pyrebase4 
+firebase-admin
