@@ -1,21 +1,24 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from firebase_admin import auth
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
+from ..schemas.usersSchema import AuthBase
+
 
 router = APIRouter(
     prefix="/signup",
-    tags=['Users']
+    tags=['Sign Up']
 )
 
+
 @router.post('/')
-async def signup(email: str, password: str):
-   if email is None or password is None:
+async def signup(request: AuthBase):
+   if request.email is None or request.password is None:
        raise HTTPException(detail={'message': 'Error! Missing Email or Password'}, status_code=400)
    try:
        user = auth.create_user(
-           email=email,
-           password=password
+           email=request.email,
+           password=request.password
        )
        return JSONResponse(content={'message': f'Successfully created user {user.uid}'}, status_code=200)    
    except Exception as err:

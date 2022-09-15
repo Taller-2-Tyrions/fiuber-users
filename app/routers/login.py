@@ -1,18 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from ..firebase_configs import get_pb
+from ..schemas.usersSchema import AuthBase
 
 router = APIRouter(
     prefix="/login",
-    tags=['Users']
+    tags=['Login']
 )
 
 @router.post('/')
-async def login(email: str, password: str):
+async def login(request: AuthBase):
    try:
-       user = get_pb().auth().sign_in_with_email_and_password(email, password)
+       user = get_pb().auth().sign_in_with_email_and_password(request.email, request.password)
        jwt = user['idToken']
        return JSONResponse(content={'token': jwt}, status_code=200)
-   except:
-       return HTTPException(detail={'message': 'There was an error logging in'}, status_code=400)
+   except Exception as err:
+       raise HTTPException(detail={'message': 'There was an error logging in '+str(err)}, status_code=400)
