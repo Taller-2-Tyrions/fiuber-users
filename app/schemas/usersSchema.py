@@ -6,8 +6,10 @@ class PersonBase(BaseModel):
     name: str
     last_name: str
 
+
 class UserBase(PersonBase):
     address: str
+
 
 class DriverBase(PersonBase):
     car: str
