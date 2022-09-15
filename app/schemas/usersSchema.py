@@ -1,17 +1,15 @@
 from pydantic import BaseModel
 
 
-class UserBase(BaseModel):
+class PersonBase(BaseModel):
+    id: str
     name: str
     last_name: str
 
 
-class UserCreate(UserBase):
-    password: str
+class UserBase(PersonBase):
+    address: str
 
 
-class User(UserBase):
-    id: int
-
-    class Config:
-        orm_mode = True
+class DriverBase(PersonBase):
+    car: str
