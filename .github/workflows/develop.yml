@@ -10,10 +10,7 @@ on:
 env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   APP_NAME: ${{ secrets.HEROKU_APP }}
-  MONGO_URI: ${{secrets.MONGO_URI}}
-  MONGO_PORT: ${{secrets.MONGO_PORT}}
-  MONGO_DB: ${{secrets.MONGO_DB}}
-  FIREBASE_KEY: ${{secrets.FIREBASE_KEY}}
+  
 
 jobs:
   flake8:
@@ -96,4 +93,8 @@ jobs:
         # For more information look at https://devcenter.heroku.com/articles/process-model
         
         process_type: web
-
+      env:
+        FIREBASE_KEY: ${{secrets.FIREBASE_KEY}}
+        MONGO_URI: ${{secrets.MONGO_URI}}
+        MONGO_PORT: ${{secrets.MONGO_PORT}} 
+        MONGO_DB: ${{secrets.MONGO_DB}}
