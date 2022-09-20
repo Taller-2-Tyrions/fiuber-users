@@ -2,7 +2,10 @@ import pyrebase
 import firebase_admin
 from firebase_admin import credentials
 import json
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 if (os.getenv("FIREBASE_KEY")):
     cred = credentials.Certificate(json.loads(os.getenv("FIREBASE_KEY")))
