@@ -1,4 +1,4 @@
-from app.schemas.usersSchema import UserBase
+from app.schemas.users_schema import UserBase
 
 
 def set_return_value(res):
@@ -33,10 +33,10 @@ def delete_user(db, user_id: str):
 
 
 def update_user(db, user_id: str, changes: dict):
-    user_found = db["users"].fin_one_and_update({"id": user_id},
-                                                {"$set": changes})
+    user_found = db["users"].find_one_and_update({"id": user_id},
+                                                 {"$set": changes})
     if user_found:
         return set_return_value(user_found)
-    driver_found = db["drivers"].fin_one_and_update({"id": user_id},
-                                                    {"$set": changes})
+    driver_found = db["drivers"].find_one_and_update({"id": user_id},
+                                                     {"$set": changes})
     return set_return_value(driver_found)
