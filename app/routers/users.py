@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from ..schemas.usersSchema import UserBase, DriverBase
+from ..schemas.users_schema import UserBase, DriverBase
 from ..crud import crud
 from ..database.mongo import db
 from typing import Union

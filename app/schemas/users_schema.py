@@ -14,9 +14,11 @@ class UserBase(PersonBase):
 class DriverBase(PersonBase):
     car: str
 
+
 class AuthBase(BaseModel):
     email: str
     password: str
+
 
 class TokenBase(BaseModel):
     token: str
