@@ -97,7 +97,7 @@ jobs:
         
         process_type: web
       env:
-        FIREBASE_KEY: ${{secrets.FIREBASE_KEY}}
-        MONGO_URI: ${{secrets.MONGO_URI}}
-        MONGO_PORT: ${{secrets.MONGO_PORT}} 
-        MONGO_DB: ${{secrets.MONGO_DB}}
+        FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MONGO_PORT: ${{ secrets.MONGO_PORT }} 
+        MONGO_DB: ${{ secrets.MONGO_DB }}

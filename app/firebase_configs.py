@@ -8,9 +8,11 @@ import os
 load_dotenv()
 
 if (os.getenv("FIREBASE_KEY")):
-    cred = credentials.Certificate(json.loads(os.getenv("FIREBASE_KEY")))
-else:
-    cred = credentials.Certificate("firebasekey.json")
+    f = open("firebasekey.json", "w")
+    f.write(json.loads(os.getenv("FIREBASE_KEY")))
+    f.close()
+
+cred = credentials.Certificate("firebasekey.json")
 
 firebase = firebase_admin.initialize_app(cred)
 
