@@ -87,6 +87,9 @@ jobs:
         # Additional options of docker build command.
         docker_options: "--no-cache"
 
+        docker_build_args: |
+            FIREBASE_KEY
+
         # (Optional, default: "web")
         # Select the process type for which you want the docker container to be uploaded.
         # By default, this argument is set to "web".
