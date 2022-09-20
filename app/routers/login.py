@@ -4,6 +4,7 @@ from fastapi.exceptions import HTTPException
 from ..firebase_configs import get_pb
 from ..schemas.users_schema import AuthBase
 
+
 router = APIRouter(
     prefix="/login",
     tags=['Login']
@@ -20,4 +21,14 @@ async def login(request: AuthBase):
     except Exception as err:
         raise HTTPException(detail={
             'message': 'There was an error logging in ' + str(err)},
+                 status_code=400)
+
+
+@router.get('/password-recovery')
+async def send_recover_email(email: str):
+    try:
+        get_pb().auth().send_password_reset_email(email)
+    except Exception as err:
+        raise HTTPException(detail={
+            'message': 'There was an error sending recovery mail' + str(err)},
                  status_code=400)

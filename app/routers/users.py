@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from ..schemas.users_schema import UserBase, DriverBase
 from ..crud import crud
 from ..database.mongo import db
@@ -12,7 +12,8 @@ router = APIRouter(
 
 
 @router.get('')
-def find_user(user_id: str):
+def find_user(user):
+    user_id = user.get("id")
     return crud.find_user(db, user_id)
 
 
@@ -26,6 +27,6 @@ def update_user(user_id: str, changes: dict):
     return crud.update_user(db, user_id, changes)
 
 
-@router.delete('')
+@router.delete('/{user_id}', status_code=status.HTTP_202_ACCEPTED)
 def delete_user(user_id: str):
     return crud.delete_user(db, user_id)
