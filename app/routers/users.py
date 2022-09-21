@@ -11,9 +11,8 @@ router = APIRouter(
 )
 
 
-@router.get('')
-def find_user(user):
-    user_id = user.get("id")
+@router.get('/{user_id}')
+def find_user(user_id: str):
     return crud.find_user(db, user_id)
 
 
