@@ -2,12 +2,17 @@ import pyrebase
 import firebase_admin
 from firebase_admin import credentials
 import json
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 if (os.getenv("FIREBASE_KEY")):
-    cred = credentials.Certificate(json.loads(os.getenv("FIREBASE_KEY")))
-else:
-    cred = credentials.Certificate("firebasekey.json")
+    f = open("firebasekey.json", "w")
+    f.write(json.loads(os.getenv("FIREBASE_KEY")))
+    f.close()
+
+cred = credentials.Certificate("firebasekey.json")
 
 firebase = firebase_admin.initialize_app(cred)
 
