@@ -1,10 +1,19 @@
 from pydantic import BaseModel
+from typing import List
+
+
+class CarBase(BaseModel):
+    model: str
+    year: int
+    plaque: str
+    capacity: int
 
 
 class PersonBase(BaseModel):
     id: str
     name: str
     last_name: str
+    roles: List[str]
 
 
 class UserBase(PersonBase):
@@ -12,7 +21,7 @@ class UserBase(PersonBase):
 
 
 class DriverBase(PersonBase):
-    car: str
+    car: CarBase
 
 
 class AuthBase(BaseModel):
