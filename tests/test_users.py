@@ -8,7 +8,8 @@ def test_create_user():
     user_id = "10"
     name_asked = "Santix"
     user_example = users_schema.UserBase(id=user_id, name=name_asked,
-                                         last_name="F", address="faraway")
+                                         last_name="F", roles=["user"],
+                                         address="faraway")
     crud.create_user(db, user_example)
 
     user_found = crud.find_user(db, user_id)
@@ -20,8 +21,11 @@ def test_create_driver():
     db = mongomock.MongoClient().db
     driver_id = "100a"
     name_asked = "Nachox"
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
-                                             last_name="F", car="reno12")
+                                             last_name="F", roles=["driver"],
+                                             car=car_example)
     crud.create_user(db, driver_example)
 
     driver_found = crud.find_user(db, driver_id)
@@ -34,8 +38,11 @@ def test_update_driver():
     driver_id = "100a"
     name = "Nachox"
 
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name="F", car="reno12")
+                                             last_name="F", roles=["driver"],
+                                             car=car_example)
     crud.create_user(db, driver_example)
 
     new_name = "Santix"
@@ -52,8 +59,11 @@ def test_multiple_update_driver():
     driver_id = "100a"
     name = "Nachox"
     last_name = "F"
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name=last_name, car="reno12")
+                                             last_name="F", roles=["driver"],
+                                             car=car_example)
     crud.create_user(db, driver_example)
 
     new_name = "Santix"
@@ -70,18 +80,22 @@ def test_multiple_update_driver():
 
 def test_delete_user():
     db = mongomock.MongoClient().db
-    user_id = "10"
+    driver_id = "10"
     name_asked = "Santix"
-    user_example = users_schema.UserBase(id=user_id, name=name_asked,
-                                         last_name="F", address="faraway")
-    crud.create_user(db, user_example)
 
-    user_found = crud.find_user(db, user_id)
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=["driver"],
+                                             car=car_example)
+    crud.create_user(db, driver_example)
+
+    user_found = crud.find_user(db, driver_id)
 
     assert (user_found.get("name") == name_asked)
 
-    crud.delete_user(db, user_id=user_id)
+    crud.delete_user(db, user_id=driver_id)
 
-    user_found = crud.find_user(db, user_id)
+    user_found = crud.find_user(db, driver_id)
 
     assert (user_found is None)

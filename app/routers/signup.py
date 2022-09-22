@@ -13,6 +13,7 @@ router = APIRouter(
 
 @router.post('/')
 async def signup(request: AuthBase):
+    # print(request)
     if request.email is None or request.password is None:
         raise HTTPException(detail={
                 'message': 'Error! Missing Email or Password'},
