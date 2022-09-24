@@ -32,3 +32,11 @@ pb = pyrebase.initialize_app(firebaseConfig)
 
 def get_pb():
     return pb
+
+
+def get_firebase():
+    return firebase
+
+
+def get_firebaseconfig():
+    return firebaseConfig
