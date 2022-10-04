@@ -99,3 +99,65 @@ def test_delete_user():
     user_found = crud.find_user(db, driver_id)
 
     assert (user_found is None)
+
+
+def test_user_in_db():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=["driver"],
+                                             car=car_example)
+    crud.create_user(db, driver_example)
+
+    reg = crud.is_registered(db, driver_id)
+    assert (reg)
+
+
+def test_user_not_in_db():
+    db = mongomock.MongoClient().db
+    driver_id = "123"
+    reg = crud.is_registered(db, driver_id)
+    assert (not reg)
+
+
+def test_get_roles():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+    roles = ["Driver"]
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=roles,
+                                             car=car_example)
+    crud.create_user(db, driver_example)
+
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(roles))
+
+
+def test_get_multiple_roles():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+    roles = ["Driver"]
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=roles,
+                                             car=car_example)
+    crud.create_user(db, driver_example)
+
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(roles))
+
+    changes = {"roles": ["user"], "address": "asd"}
+    crud.update_user(db, driver_id, changes=changes)
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(["Driver", "User"]))

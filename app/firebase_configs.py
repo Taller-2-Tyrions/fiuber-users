@@ -17,14 +17,13 @@ cred = credentials.Certificate("firebasekey.json")
 firebase = firebase_admin.initialize_app(cred)
 
 firebaseConfig = {
-    "apiKey": "AIzaSyDQggb3aFCUpnBb8Dm2bRNoh49G5Pn1pIM",
-    "authDomain": "fiuber-develop.firebaseapp.com",
-    "projectId": "fiuber-develop",
-    "storageBucket": "fiuber-develop.appspot.com",
-    "messagingSenderId": "413252036613",
-    "appId": "1:413252036613:web:c3bbbe1caae2b9078b546c",
-    "measurementId": "G-ZX713SES8G",
-    "databaseURL": ""
+    "apiKey": "AIzaSyBSenFicB4rNCqRO183gmoMILDImbTR84Y",
+    "authDomain": "fiuber-36b86.firebaseapp.com",
+    "projectId": "fiuber-36b86",
+    "storageBucket": "fiuber-36b86.appspot.com",
+    "messagingSenderId": "388259755156",
+    "appId": "1:388259755156:web:04d82df1a410135ee9f081",
+    'databaseURL': ""
 }
 
 pb = pyrebase.initialize_app(firebaseConfig)
