@@ -38,7 +38,7 @@ def update_user(db, user_id: str, changes):
 
 
 def is_registered(db, user_id: str):
-    return db["users"].count_documents({"id": user_id}, limit=1)
+    return db["users"].count_documents({"id": user_id}, limit=1) > 0
 
 
 def get_roles(db, user_id: str):

@@ -39,3 +39,7 @@ class AuthBase(BaseModel):
 
 class TokenBase(BaseModel):
     token: str
+
+
+class RecoveryEmailBase(BaseModel):
+    email: str

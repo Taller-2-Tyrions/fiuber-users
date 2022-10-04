@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from ..firebase_configs import get_pb
 from firebase_admin import auth
-from ..schemas.users_schema import AuthBase, TokenBase
+from ..schemas.users_schema import AuthBase, TokenBase, RecoveryEmailBase
 from ..database.mongo import db
 from ..crud import crud
 from .users import check_block_permissions
@@ -31,14 +31,14 @@ async def login(request: AuthBase):
                  status_code=400)
 
 
-@router.get('/password-recovery', status_code=status.HTTP_200_OK)
-async def send_recover_email(email: str):
+@router.post('/password-recovery', status_code=status.HTTP_200_OK)
+async def send_recover_email(email: RecoveryEmailBase):
     try:
-        get_pb().auth().send_password_reset_email(email)
+        get_pb().auth().send_password_reset_email(email.email)
     except Exception as err:
-        raise HTTPException(detail={
-            'message': 'There was an error sending recovery mail' + str(err)},
-                 status_code=400)
+        raise HTTPException(detail={'message':
+              'There was an error sending recovery mail. ' + str(err)},
+                            status_code=400)
 
 
 @router.post('/google')
