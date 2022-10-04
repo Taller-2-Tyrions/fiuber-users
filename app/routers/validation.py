@@ -18,7 +18,8 @@ async def validate(request: TokenBase):
         user = auth.verify_id_token(jwt)
         uid = user["uid"]
         roles = crud.get_roles(db, uid)
-        return {"uid": uid, "roles": roles}
+        blocked = crud.is_blocked(db, uid)
+        return {"uid": uid, "roles": roles, "is_blocked": blocked}
     except Exception as err:
         raise HTTPException(detail={
             'message': 'Error validating token: '+str(err)}, status_code=400)

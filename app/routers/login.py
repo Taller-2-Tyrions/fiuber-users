@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from ..firebase_configs import get_pb
@@ -6,6 +6,7 @@ from firebase_admin import auth
 from ..schemas.users_schema import AuthBase, TokenBase
 from ..database.mongo import db
 from ..crud import crud
+from .users import check_block_permissions
 
 router = APIRouter(
     prefix="/login",
@@ -20,6 +21,7 @@ async def login(request: AuthBase):
                                         request.email, request.password)
         jwt = user['idToken']
         missing_register = crud.is_registered(db, user["localId"])
+        check_block_permissions(user["localId"])
         return JSONResponse(content={'token': jwt,
                                      'is_registered': missing_register},
                             status_code=200)
@@ -29,7 +31,7 @@ async def login(request: AuthBase):
                  status_code=400)
 
 
-@router.get('/password-recovery')
+@router.get('/password-recovery', status_code=status.HTTP_200_OK)
 async def send_recover_email(email: str):
     try:
         get_pb().auth().send_password_reset_email(email)
@@ -45,6 +47,7 @@ async def login_google(request: TokenBase):
         jwt = request.token
         user = auth.verify_id_token(jwt)
         missing_register = crud.is_registered(db, user["localId"])
+        check_block_permissions(user["localId"])
         return JSONResponse(content={'token': jwt,
                                      'is_registered': missing_register},
                             status_code=200)

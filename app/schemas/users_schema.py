@@ -1,5 +1,12 @@
 from pydantic import BaseModel
 from typing import List
+from enum import Enum
+
+
+class Roles(Enum):
+    USER = "User"
+    DRIVER = "Driver"
+    ADMIN = "Admin"
 
 
 class CarBase(BaseModel):
@@ -13,7 +20,8 @@ class PersonBase(BaseModel):
     id: str
     name: str
     last_name: str
-    roles: List[str]
+    roles: List[Roles]
+    is_blocked: bool
 
 
 class UserBase(PersonBase):
