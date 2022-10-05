@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from ..schemas.users_schema import UserBase, DriverBase
+from ..schemas.users_schema import UserBase, DriverBase, Roles
 from ..crud import crud
 from ..database.mongo import db
 from typing import Union
@@ -14,6 +14,7 @@ router = APIRouter(
 
 @router.get('/{user_id}')
 def find_user(user_id: str, user_caller: str):
+    check_block_permissions(user_caller)
     found_user = crud.find_user(db, user_id)
 
     if not found_user:
@@ -29,6 +30,7 @@ def find_user(user_id: str, user_caller: str):
 
 @router.post('')
 def create_user(user: Union[UserBase, DriverBase]):
+    check_already_created(user.id)
     roles = user.roles
     if has_admin_role(roles):
         raise HTTPException(detail={
@@ -39,7 +41,10 @@ def create_user(user: Union[UserBase, DriverBase]):
 
 
 @router.put('')
-def update_user(user_id: str, changes: dict, user_caller: str):
+def update_user(user_id: str, changes: Union[UserBase, DriverBase],
+                user_caller: str):
+    changes.id = user_id
+    check_block_permissions(user_caller)
     check_change_permissions(user_id, user_caller, "Update User")
     check_valid_change(changes, user_caller)
     return crud.update_user(db, user_id, changes)
@@ -62,6 +67,19 @@ def filter_accesible_content(found_user):
     return found_user
 
 
+def has_admin_role(roles):
+    return Roles.ADMIN in roles
+
+
+def isAdmin(id):
+    user = crud.find_user(db, id)
+    if user:
+        roles = user.get("roles")
+        return Roles.ADMIN in roles
+
+    return False
+
+
 def check_change_permissions(user_id, user_caller, action):
     if not has_full_access(user_id, user_caller):
         raise HTTPException(detail={
@@ -69,18 +87,15 @@ def check_change_permissions(user_id, user_caller, action):
                  status_code=401)
 
 
-def has_admin_role(roles):
-    for rol in roles:
-        if rol.lower() == "admin":
-            return True
-
-    return False
+def check_block_permissions(user_caller):
+    if crud.is_blocked(db, user_caller):
+        raise HTTPException(detail={
+                'message': 'User Blocked'},
+                 status_code=401)
 
 
 def check_valid_change(changes, user_caller):
-    roles = changes.get("roles")
-    if not roles:
-        return
+    roles = changes.roles
 
     has_admin = has_admin_role(roles)
 
@@ -90,12 +105,8 @@ def check_valid_change(changes, user_caller):
                  status_code=401)
 
 
-def isAdmin(id):
-    user = crud.find_user(db, id)
-    if user:
-        roles = user.get("roles")
-        for rol in roles:
-            if rol == "Admin":
-                return True
-
-    return False
+def check_already_created(user_id):
+    if crud.is_registered(db, user_id):
+        raise HTTPException(detail={
+                'message': 'id Already Used'},
+                 status_code=401)

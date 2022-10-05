@@ -8,8 +8,8 @@ def test_create_user():
     user_id = "10"
     name_asked = "Santix"
     user_example = users_schema.UserBase(id=user_id, name=name_asked,
-                                         last_name="F", roles=["user"],
-                                         address="faraway")
+                                         last_name="F", roles=["User"],
+                                         address="faraway", is_blocked=False)
     crud.create_user(db, user_example)
 
     user_found = crud.find_user(db, user_id)
@@ -24,8 +24,8 @@ def test_create_driver():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
-                                             last_name="F", roles=["driver"],
-                                             car=car_example)
+                                             last_name="F", roles=["Driver"],
+                                             car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
     driver_found = crud.find_user(db, driver_id)
@@ -41,8 +41,8 @@ def test_update_driver():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name="F", roles=["driver"],
-                                             car=car_example)
+                                             last_name="F", roles=["Driver"],
+                                             car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
     new_name = "Santix"
@@ -62,8 +62,8 @@ def test_multiple_update_driver():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name="F", roles=["driver"],
-                                             car=car_example)
+                                             last_name="F", roles=["Driver"],
+                                             car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
     new_name = "Santix"
@@ -86,8 +86,8 @@ def test_delete_user():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
-                                             last_name="F", roles=["driver"],
-                                             car=car_example)
+                                             last_name="F", roles=["Driver"],
+                                             car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
     user_found = crud.find_user(db, driver_id)
@@ -99,3 +99,65 @@ def test_delete_user():
     user_found = crud.find_user(db, driver_id)
 
     assert (user_found is None)
+
+
+def test_user_in_db():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=["Driver"],
+                                             car=car_example, is_blocked=False)
+    crud.create_user(db, driver_example)
+
+    reg = crud.is_registered(db, driver_id)
+    assert (reg)
+
+
+def test_user_not_in_db():
+    db = mongomock.MongoClient().db
+    driver_id = "123"
+    reg = crud.is_registered(db, driver_id)
+    assert (not reg)
+
+
+def test_get_roles():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+    roles = ["Driver"]
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=roles,
+                                             car=car_example, is_blocked=False)
+    crud.create_user(db, driver_example)
+
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(roles))
+
+
+def test_get_multiple_roles():
+    db = mongomock.MongoClient().db
+    driver_id = "10"
+    name_asked = "Santix"
+    roles = ["Driver"]
+
+    car_example = users_schema.CarBase(model="Reno12", year=2012,
+                                       plaque="AA800BB", capacity=5)
+    driver_example = users_schema.DriverBase(id=driver_id, name=name_asked,
+                                             last_name="F", roles=roles,
+                                             car=car_example, is_blocked=False)
+    crud.create_user(db, driver_example)
+
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(roles))
+
+    changes = {"roles": ["User"], "address": "asd"}
+    crud.update_user(db, driver_id, changes=changes)
+    roles_obtained = crud.get_roles(db, driver_id)
+    assert (set(roles_obtained) == set(["Driver", "User"]))

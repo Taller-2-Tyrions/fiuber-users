@@ -6,7 +6,7 @@ from fastapi.exceptions import HTTPException
 
 router = APIRouter(
     prefix="/users/{user_id}/profile/picture",
-    tags=['profile picture']
+    tags=['Profile Picture']
 )
 
 
