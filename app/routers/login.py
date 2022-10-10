@@ -50,7 +50,7 @@ async def login_google(request: TokenBase):
         missing_register = crud.is_registered(db, user["user_id"])
         check_block_permissions(user["user_id"])
         return JSONResponse(content={'token': jwt,
-                                     'is_registered': missing_register, 
+                                     'is_registered': missing_register,
                                      'id': user["user_id"]},
                             status_code=200)
     except Exception as err:
