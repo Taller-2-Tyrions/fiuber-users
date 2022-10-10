@@ -23,7 +23,7 @@ async def login(request: AuthBase):
         missing_register = crud.is_registered(db, user["localId"])
         check_block_permissions(user["localId"])
         return JSONResponse(content={'token': jwt,
-                                     'is_registered': missing_register, 
+                                     'is_registered': missing_register,
                                      'id': user["localId"]},
                             status_code=200)
     except Exception as err:
