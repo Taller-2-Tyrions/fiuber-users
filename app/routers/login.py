@@ -46,8 +46,8 @@ async def login_google(request: TokenBase):
     try:
         jwt = request.token
         user = auth.verify_id_token(jwt)
-        missing_register = crud.is_registered(db, user["localId"])
-        check_block_permissions(user["localId"])
+        missing_register = crud.is_registered(db, user["user_id"])
+        check_block_permissions(user["user_id"])
         return JSONResponse(content={'token': jwt,
                                      'is_registered': missing_register},
                             status_code=200)
