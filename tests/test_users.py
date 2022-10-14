@@ -8,7 +8,7 @@ def test_create_user():
     user_id = "10"
     name_asked = "Santix"
     user_example = users_schema.UserBase(id=user_id, name=name_asked,
-                                         last_name="F", roles=["User"],
+                                         last_name="F", roles=["Passenger"],
                                          address="faraway", is_blocked=False)
     crud.create_user(db, user_example)
 
@@ -41,7 +41,8 @@ def test_update_driver():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name="F", roles=["Driver"],
+                                             last_name="F",
+                                             roles=["Passenger"],
                                              car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
@@ -62,7 +63,8 @@ def test_multiple_update_driver():
     car_example = users_schema.CarBase(model="Reno12", year=2012,
                                        plaque="AA800BB", capacity=5)
     driver_example = users_schema.DriverBase(id=driver_id, name=name,
-                                             last_name="F", roles=["Driver"],
+                                             last_name="F",
+                                             roles=["Passenger"],
                                              car=car_example, is_blocked=False)
     crud.create_user(db, driver_example)
 
@@ -157,7 +159,7 @@ def test_get_multiple_roles():
     roles_obtained = crud.get_roles(db, driver_id)
     assert (set(roles_obtained) == set(roles))
 
-    changes = {"roles": ["User"], "address": "asd"}
+    changes = {"roles": ["Passenger"], "address": "asd"}
     crud.update_user(db, driver_id, changes=changes)
     roles_obtained = crud.get_roles(db, driver_id)
-    assert (set(roles_obtained) == set(["Driver", "User"]))
+    assert (set(roles_obtained) == set(["Driver", "Passenger"]))
