@@ -7,7 +7,7 @@ def test_create_user():
     db = mongomock.MongoClient().db
     user_id = "10"
     name_asked = "Santix"
-    user_example = users_schema.UserBase(id=user_id, name=name_asked,
+    user_example = users_schema.PassengerBase(id=user_id, name=name_asked,
                                          last_name="F", roles=["Passenger"],
                                          address="faraway", is_blocked=False)
     crud.create_user(db, user_example)
