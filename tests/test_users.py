@@ -1,15 +1,16 @@
 import mongomock
 from app.schemas import users_schema
 from app.crud import crud
+from app.schemas.users_schema import PassengerBase
 
 
 def test_create_user():
     db = mongomock.MongoClient().db
     user_id = "10"
     name_asked = "Santix"
-    user_example = users_schema.PassengerBase(id=user_id, name=name_asked,
-                                         last_name="F", roles=["Passenger"],
-                                         address="faraway", is_blocked=False)
+    user_example = PassengerBase(id=user_id, name=name_asked,
+                                 last_name="F", roles=["Passenger"],
+                                 address="faraway", is_blocked=False)
     crud.create_user(db, user_example)
 
     user_found = crud.find_user(db, user_id)
