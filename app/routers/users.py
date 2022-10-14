@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from ..schemas.users_schema import UserBase, DriverBase, Roles
+from ..schemas.users_schema import PassengerBase, DriverBase, Roles
 from ..crud import crud
 from ..database.mongo import db
 from typing import Union
@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get('/{user_id}')
+@router.get('/{user_id}/{user_caller}')
 def find_user(user_id: str, user_caller: str):
     check_block_permissions(user_caller)
     found_user = crud.find_user(db, user_id)
@@ -29,7 +29,7 @@ def find_user(user_id: str, user_caller: str):
 
 
 @router.post('')
-def create_user(user: Union[UserBase, DriverBase]):
+def create_user(user: Union[PassengerBase, DriverBase]):
     check_already_created(user.id)
     roles = user.roles
     if has_admin_role(roles):
@@ -40,8 +40,8 @@ def create_user(user: Union[UserBase, DriverBase]):
     return crud.create_user(db, user)
 
 
-@router.put('')
-def update_user(user_id: str, changes: Union[UserBase, DriverBase],
+@router.put('/{user_id}/{user_caller}')
+def update_user(user_id: str, changes: Union[PassengerBase, DriverBase],
                 user_caller: str):
     changes.id = user_id
     check_block_permissions(user_caller)
@@ -50,7 +50,8 @@ def update_user(user_id: str, changes: Union[UserBase, DriverBase],
     return crud.update_user(db, user_id, changes)
 
 
-@router.delete('/{user_id}', status_code=status.HTTP_202_ACCEPTED)
+@router.delete('/{user_id}/{user_caller}',
+               status_code=status.HTTP_202_ACCEPTED)
 def delete_user(user_id: str, user_caller: str):
     check_change_permissions(user_id, user_caller, "Delete User")
     return crud.delete_user(db, user_id)

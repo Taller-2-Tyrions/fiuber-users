@@ -4,7 +4,7 @@ from enum import Enum
 
 
 class Roles(Enum):
-    USER = "User"
+    PASSENGER = "Passenger"
     DRIVER = "Driver"
     ADMIN = "Admin"
 
@@ -24,7 +24,7 @@ class PersonBase(BaseModel):
     is_blocked: bool
 
 
-class UserBase(PersonBase):
+class PassengerBase(PersonBase):
     address: str
 
 
