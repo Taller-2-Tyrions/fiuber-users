@@ -37,8 +37,16 @@ class AuthBase(BaseModel):
     password: str
 
 
+class LoginAuthBase(AuthBase):
+    device_token: str
+
+
 class TokenBase(BaseModel):
     token: str
+
+
+class GoogleLoginBase(TokenBase):
+    device_token: str
 
 
 class RecoveryEmailBase(BaseModel):

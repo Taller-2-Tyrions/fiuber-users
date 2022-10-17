@@ -14,7 +14,9 @@ if (os.getenv("FIREBASE_KEY")):
 
 cred = credentials.Certificate("firebasekey.json")
 
-firebase = firebase_admin.initialize_app(cred)
+firebase = firebase_admin.initialize_app(cred, {
+            'databaseURL': "https://fiuber-36b86-default-rtdb.firebaseio.com/"
+})
 
 firebaseConfig = {
     "apiKey": "AIzaSyBSenFicB4rNCqRO183gmoMILDImbTR84Y",
@@ -23,7 +25,7 @@ firebaseConfig = {
     "storageBucket": "fiuber-36b86.appspot.com",
     "messagingSenderId": "388259755156",
     "appId": "1:388259755156:web:04d82df1a410135ee9f081",
-    'databaseURL': ""
+    'databaseURL': "https://fiuber-36b86-default-rtdb.firebaseio.com/"
 }
 
 pb = pyrebase.initialize_app(firebaseConfig)
