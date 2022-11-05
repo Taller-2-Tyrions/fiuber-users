@@ -69,14 +69,14 @@ def filter_accesible_content(found_user):
 
 
 def has_admin_role(roles):
-    return Roles.ADMIN in roles
+    return Roles.ADMIN.value in roles
 
 
 def isAdmin(id):
     user = crud.find_user(db, id)
     if user:
         roles = user.get("roles")
-        return Roles.ADMIN in roles
+        return Roles.ADMIN.value in roles
 
     return False
 
