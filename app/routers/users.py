@@ -58,6 +58,36 @@ def create_user(user: Union[PassengerBase, DriverBase]):
     return crud.create_user(db, user)
 
 
+@router.post('/admin/{user_id}/{user_caller}')
+def make_admin(user_id: str, user_caller: str):
+    if (isAdmin(user_caller)):
+        changes = {"roles": ["Admin"]}
+        return crud.update_user(db, user_id, changes)
+    raise HTTPException(detail={
+                    'message': 'Not Admin Permission'},
+                    status_code=401)
+
+
+@router.post('/block/{user_id}/{user_caller}')
+def block_user(user_id: str, user_caller: str):
+    if isAdmin(user_caller):
+        changes = {"is_blocked": True}
+        return crud.update_user(db, user_id, changes)
+    raise HTTPException(detail={
+                    'message': 'Not Admin Permission'},
+                    status_code=401)
+
+
+@router.post('/unblock/{user_id}/{user_caller}')
+def unblock_user(user_id: str, user_caller: str):
+    if isAdmin(user_caller):
+        changes = {"is_blocked": False}
+        return crud.update_user(db, user_id, changes)
+    raise HTTPException(detail={
+                    'message': 'Not Admin Permission'},
+                    status_code=401)
+
+
 @router.put('/{user_id}/{user_caller}')
 def update_user(user_id: str, changes: Union[PassengerBase, DriverBase],
                 user_caller: str):

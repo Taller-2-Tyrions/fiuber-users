@@ -1,4 +1,5 @@
 from fastapi.encoders import jsonable_encoder
+from pymongo import ReturnDocument
 
 
 def set_return_value(res):
@@ -30,6 +31,7 @@ def delete_user(db, user_id: str):
 def update_user(db, user_id: str, changes):
     changes = jsonable_encoder(changes)
     roles = changes.get("roles")
+    after = ReturnDocument.AFTER
 
     if roles:
         actual_roles = find_user(db, user_id).get("roles")
@@ -37,7 +39,8 @@ def update_user(db, user_id: str, changes):
         changes.update({"roles": actual_roles})
 
     user_found = db["users"].find_one_and_update({"id": user_id},
-                                                 {"$set": changes})
+                                                 {"$set": changes},
+                                                 return_document=after)
     return set_return_value(user_found)
 
 
