@@ -13,8 +13,11 @@ def find_user(db, searched_id) -> dict:
     return db["users"].find_one({"id": searched_id}, {"_id": 0})
 
 
-def find_all_users(db) -> dict:
-    return db["users"].find({}, {"_id": 0})
+def find_all_users(db):
+    result = []
+    for i in db["users"].find({}, {"_id": 0}):
+        result.append(i)
+    return result
 
 
 def create_user(db, user):
