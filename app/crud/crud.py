@@ -12,6 +12,10 @@ def find_user(db, searched_id) -> dict:
     return db["users"].find_one({"id": searched_id}, {"_id": 0})
 
 
+def find_all_users(db) -> dict:
+    return db["users"].find({}, {"_id": 0})
+
+
 def create_user(db, user):
     user_encoded = jsonable_encoder(user)
     value = db["users"].insert_one(user_encoded)

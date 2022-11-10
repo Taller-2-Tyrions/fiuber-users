@@ -12,6 +12,24 @@ router = APIRouter(
 )
 
 
+@router.get('/{user_caller}')
+def find_all_users(user_caller: str):
+    """
+    Gets all users in DataBase
+    """
+    if (isAdmin(user_caller)):
+        found = crud.find_all_users(db)
+        if not found:
+            raise HTTPException(detail={
+                    'message': 'Cant access DataBase'},
+                    status_code=404)
+
+        return found
+    raise HTTPException(detail={
+                    'message': 'Not Admin Permission'},
+                    status_code=401)
+
+
 @router.get('/{user_id}/{user_caller}')
 def find_user(user_id: str, user_caller: str):
     check_block_permissions(user_caller)
