@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get('/{user_caller}')
+@router.get('/all/{user_caller}')
 def find_all_users(user_caller: str):
     """
     Gets all users in DataBase

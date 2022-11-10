@@ -14,7 +14,7 @@ def find_user(db, searched_id) -> dict:
 
 
 def find_all_users(db) -> dict:
-    return db["users"].find({}, {"_id": 0})
+    return db["users"].find({})
 
 
 def create_user(db, user):
