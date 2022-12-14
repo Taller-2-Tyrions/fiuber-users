@@ -1,5 +1,4 @@
-[![codecov](https://codecov.io/gh/Taller-2-Tyrions/users/branch/dev/graph/badge.svg?token=IEH333J1IF)](https://codecov.io/gh/Taller-2-Tyrions/users)
-
+[![codecov](https://codecov.io/gh/Taller-2-Tyrions/fiuber-users/branch/develop/graph/badge.svg?token=IEH333J1IF)](https://codecov.io/gh/Taller-2-Tyrions/fiuber-users)
 # fiuber-users
 
 
