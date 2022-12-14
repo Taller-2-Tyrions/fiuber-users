@@ -1,8 +1,32 @@
 from fastapi import FastAPI
+from .routers import users, login, signup, validation, usersprofile
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(usersprofile.router)
+app.include_router(users.router)
+app.include_router(login.router)
+app.include_router(signup.router)
+app.include_router(validation.router)
+
 
 @app.get("/")
-def root():
+async def root():
     return {"Hello": "World"}

@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#firebase keys
+firebase-key.json
+firebasekey.json
