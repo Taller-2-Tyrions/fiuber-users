@@ -1,7 +1,10 @@
 [![codecov](https://codecov.io/gh/Taller-2-Tyrions/fiuber-users/branch/main/graph/badge.svg?token=IEH333J1IF)](https://codecov.io/gh/Taller-2-Tyrions/fiuber-users)
 
-# Fiuber - Users
+# Fiuber-Users
+Microservicio para manejo de usuarios(pasajeros y choferes).
 
+# Documentación
+Documentación técnica: https://taller-2-tyrions.github.io/fiuber-documentation-tecnica/
 
 ## Building
 
